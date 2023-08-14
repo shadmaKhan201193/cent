@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="CustomerService"
+	packages="">
+	<Properties>
+		<Property name="LOG_PATTERN">%5p %d %d{Z} [%X{requestAppName}, %X{traceId}, %X{spanId}] -- %t %c - %m%n
+		</Property>
+	</Properties>
+	<Appenders>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+		<File name="sqlQueries" fileName="logs/sql.log">
+	      <PatternLayout>
+	        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+	      </PatternLayout>
+	    </File>
+	    <Async name="Queries">
+	      <AppenderRef ref="sqlQueries"/>
+	    </Async>
+	    <File name="appLogs" fileName="logs/applogs.log">
+	      <PatternLayout>
+	        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+	      </PatternLayout>
+	    </File>
+	    <Async name="AppLogs">
+	      <AppenderRef ref="appLogs"/>
+	    </Async>
+	    <File name="slowQueries" fileName="logs/sqlslow.log">
+	      <PatternLayout>
+	        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+	      </PatternLayout>
+	    </File>
+	    <Async name="SlowQueries">
+	      <AppenderRef ref="slowQueries"/>
+	    </Async>
+	</Appenders>
+
+	<Loggers>
+		<Root level="error">
+			<AppenderRef ref="STDOUT"/>
+		</Root>
+		
+		<Logger name="ai.kiya" level="info" additivity="false" >
+			<appender-ref ref="AppLogs" level="info" />
+		</Logger>
+		<!-- <Logger name="org.hibernate.stat" level="debug" additivity="false" >
+			<appender-ref ref="STDOUT" level="debug" />
+		</Logger> -->
+		<Logger name="org.hibernate.SQL" level="debug" additivity="false" >
+			<appender-ref ref="Queries" level="debug" />
+		</Logger>
+		<Logger name="org.hibernate.SQL_SLOW" level="debug" additivity="false" >
+			<AppenderRef ref="SlowQueries" level="debug" />
+		</Logger>
+		
+		<!-- <Logger name="org.hibernate.type" level="trace" additivity="false" >
+			<appender-ref ref="Queries" level="trace" />
+		</Logger> -->
+	</Loggers>
+</Configuration>

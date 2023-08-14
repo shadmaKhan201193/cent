@@ -1,0 +1,72 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.1'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'ai.kiya'
+version = '0.0.1'
+sourceCompatibility = '8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+repositories {
+	maven {
+        url "http://172.21.0.66:8081/repository/maven-public/"
+		allowInsecureProtocol = true
+    }
+}
+
+ext {
+	set('springCloudVersion', "2021.0.3")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.apache.commons:commons-lang3'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.hibernate:hibernate-core'
+	//implementation 'mysql:mysql-connector-java:8.0.26'
+	implementation 'com.microsoft.sqlserver:sqljdbc4:4.0'
+	implementation 'org.apache.httpcomponents:httpclient'
+	
+	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.14.0'
+	implementation 'org.springframework.boot:spring-boot-starter-activemq'
+	implementation 'org.apache.activemq:activemq-camel:5.15.6'
+	implementation 'org.apache.camel.springboot:camel-jms-starter:3.14.0'
+	
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	
+	implementation 'org.apache.logging.log4j:log4j-core'
+	implementation 'org.apache.logging.log4j:log4j-slf4j-impl'
+	implementation 'org.slf4j:slf4j-api'
+	
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	//implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
+	//implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+	//implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	//implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+	
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+	
+
+	//testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
